@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Call</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.3.1/peerjs.min.js"></script>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        video { width: 45%; border: 2px solid black; margin: 10px; }
+        #video-container { display: flex; justify-content: center; }
+    </style>
+</head>
+<body>
+
+    <h2>Live Video Calling</h2>
+    <p>Your ID: <span id="my-id"></span></p>
+    <input type="text" id="remote-id" placeholder="Enter Remote Peer ID">
+    <button onclick="callUser()">Call</button>
+
+    <div id="video-container">
+        <video id="my-video" autoplay muted></video>
+        <video id="remote-video" autoplay></video>
+    </div>
+
+    <script>
+        const peer = new Peer(); // Creates a new PeerJS connection
+
+        peer.on('open', id => {
+            document.getElementById("my-id").innerText = id;
+        });
+
+        const myVideo = document.getElementById("my-video");
+        const remoteVideo = document.getElementById("remote-video");
+
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+            .then(stream => {
+                myVideo.srcObject = stream;
+
+                peer.on('call', call => {
+                    call.answer(stream);
+                    call.on('stream', remoteStream => {
+                        remoteVideo.srcObject = remoteStream;
+                    });
+                });
+            });
+
+        function callUser() {
+            const remoteId = document.getElementById("remote-id").value;
+            const call = peer.call(remoteId, myVideo.srcObject);
+
+            call.on('stream', remoteStream => {
+                remoteVideo.srcObject = remoteStream;
+            });
+        }
+    </script>
+<br><a href="video-call.html" class="button">Video Call</a><br><br>
+</body>
+</html>

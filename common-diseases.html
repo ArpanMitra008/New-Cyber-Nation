@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Common Diseases in India</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e2a78, #421e47, #993a2c);
+            color: #fff;
+            overflow-x: hidden;
+            perspective: 1000px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 4em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 50px;
+            background: linear-gradient(90deg, #f1c40f, #e74c3c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            animation: neonGlow 2s infinite, fadeInDown 2s ease-in-out forwards;
+        }
+
+        @keyframes neonGlow {
+            0% {
+                text-shadow: 0 0 5px #f1c40f, 0 0 20px #e74c3c, 0 0 30px #e74c3c, 0 0 40px #f1c40f;
+            }
+            50% {
+                text-shadow: 0 0 10px #e74c3c, 0 0 30px #f1c40f, 0 0 50px #f1c40f, 0 0 70px #e74c3c;
+            }
+            100% {
+                text-shadow: 0 0 5px #f1c40f, 0 0 20px #e74c3c, 0 0 30px #e74c3c, 0 0 40px #f1c40f;
+            }
+        }
+
+        /* Particle Background */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            background: url('https://thumbs.gfycat.com/BarrenCreativeHomalocephale-size_restricted.gif') repeat;
+            opacity: 0.2;
+            z-index: -1;
+            animation: moveBg 30s linear infinite;
+        }
+
+        @keyframes moveBg {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 1000px 1000px;
+            }
+        }
+
+        .disease {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid #f1c40f;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px auto;
+            max-width: 800px;
+            box-shadow: 0 8px 20px rgba(241, 196, 15, 0.5);
+            transform: translateY(100px) rotateX(15deg);
+            opacity: 0;
+            animation: bounceUp 1s forwards ease-out;
+            transition: all 0.4s ease;
+        }
+
+        h2 {
+            font-size: 2.5em;
+            color: #f1c40f;
+            animation: flickerEffect 2s infinite;
+            transform: translateZ(50px);
+            text-shadow: 0 0 10px #e74c3c, 0 0 20px #f1c40f;
+        }
+
+        p {
+            font-size: 1.5em;
+            margin-top: 10px;
+            color: #fff;
+        }
+
+        .disease:hover {
+            transform: scale(1.1) rotateX(0deg) rotateY(10deg);
+            box-shadow: 0 12px 35px rgba(241, 196, 15, 0.8);
+        }
+
+        .disease:hover h2 {
+            text-shadow: 0 0 15px #e74c3c, 0 0 25px #f1c40f;
+        }
+
+        /* Keyframe Animations */
+        @keyframes bounceUp {
+            0% {
+                transform: translateY(100px) rotateX(15deg);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0) rotateX(0deg);
+                opacity: 1;
+            }
+        }
+
+        @keyframes flickerEffect {
+            0% {
+                opacity: 0.8;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0.8;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Diseases that Shake India</h1>
+
+    <div class="disease">
+        <h2><a href="https://en.wikipedia.org/wiki/Diabetes" target="_blank">1. Diabetes</a></h2>
+        <p><strong>Causes:</strong> Poor diet, obesity, lack of exercise.</p>
+        <p><strong>Cures:</strong> Healthy diet, regular exercise, insulin therapy, and medication.</p>
+    </div>
+
+    <div class="disease">
+        <h2><a href="https://en.wikipedia.org/wiki/Hypertension" target="_blank">2. Hypertension (High Blood Pressure)</a></h2>
+        <p><strong>Causes:</strong> Stress, unhealthy diet, lack of physical activity.</p>
+        <p><strong>Cures:</strong> Lifestyle changes, medications, regular monitoring.</p>
+    </div>
+
+    <div class="disease">
+        <h2><a href="https://en.wikipedia.org/wiki/Tuberculosis" target="_blank">3. Tuberculosis (TB)</a></h2>
+        <p><strong>Causes:</strong> Bacterial infection, close contact with infected individuals.</p>
+        <p><strong>Cures:</strong> Long-term antibiotics, completing the full course of treatment.</p>
+    </div>
+
+    <div class="disease">
+        <h2><a href="https://en.wikipedia.org/wiki/Malaria" target="_blank">4. Malaria</a></h2>
+        <p><strong>Causes:</strong> Mosquito bites, particularly in rural areas.</p>
+        <p><strong>Cures:</strong> Antimalarial medications, mosquito control measures.</p>
+    </div>
+
+    <div class="disease">
+        <h2><a href="https://en.wikipedia.org/wiki/Diarrhea" target="_blank">5. Diarrhea</a></h2>
+        <p><strong>Causes:</strong> Contaminated food and water, infections.</p>
+        <p><strong>Cures:</strong> Rehydration solutions, antibiotics if bacterial infection.</p>
+    </div>
+
+    <div class="disease">
+        <h2><a href="https://en.wikipedia.org/wiki/Dengue_fever" target="_blank">6. Dengue Fever</a></h2>
+        <p><strong>Causes:</strong> Aedes mosquito bites.</p>
+        <p><strong>Cures:</strong> Pain relievers, fluids, and hospitalization in severe cases.</p>
+    </div>
+
+    <div class="disease">
+        <h2><a href="https://en.wikipedia.org/wiki/Heart_disease" target="_blank">7. Heart Disease</a></h2>
+        <p><strong>Causes:</strong> Unhealthy lifestyle, genetics, high cholesterol.</p>
+        <p><strong>Cures:</strong> Healthy diet, exercise, medications, and surgeries if necessary.</p>
+    </div>
+
+</body>
+</html>
