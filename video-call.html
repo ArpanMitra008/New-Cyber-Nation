@@ -6,98 +6,133 @@
     <title>Video Call</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.3.1/peerjs.min.js"></script>
     <style>
-    .button {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #4CAF50;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-        font-size: 16px;
-        margin-top: 10px;
-    }
-
-    .button:hover {
-        background-color: #45a049;
-    }
-</style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        #video-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        video {
+            width: 45%;
+            border: 2px solid black;
+            margin: 10px;
+        }
+        .controls {
+            margin-top: 15px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
 
     <h2>Live Video Calling</h2>
-    <p>Your ID: <span id="my-id"></span></p>
+    <p>Your ID: <span id="my-id">Loading...</span></p>
+
     <input type="text" id="remote-id" placeholder="Enter Remote Peer ID">
-    <button onclick="callUser()">Call</button>
+    <div class="controls">
+        <button onclick="callUser()">Call</button>
+        <button onclick="endCall()">End Call</button>
+    </div>
 
     <div id="video-container">
         <video id="my-video" autoplay muted></video>
         <video id="remote-video" autoplay></video>
     </div>
 
-   <script>
-    const peer = new Peer();
-    let localStream;
-    let currentCall = null;
+    <script>
+        const peer = new Peer(); // Create a new PeerJS connection
+        let localStream;
+        let currentCall = null;
 
-    const myVideo = document.getElementById("my-video");
-    const remoteVideo = document.getElementById("remote-video");
+        const myVideo = document.getElementById("my-video");
+        const remoteVideo = document.getElementById("remote-video");
 
-    peer.on('open', id => {
-        document.getElementById("my-id").innerText = id;
-    });
+        // Display your peer ID
+        peer.on('open', id => {
+            document.getElementById("my-id").innerText = id;
+        });
 
-    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-        .then(stream => {
-            localStream = stream;
-            myVideo.srcObject = stream;
+        // Access camera and microphone
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+            .then(stream => {
+                localStream = stream;
+                myVideo.srcObject = stream;
 
-            peer.on('call', call => {
-                currentCall = call;
-                call.answer(localStream);
-                call.on('stream', remoteStream => {
-                    remoteVideo.srcObject = remoteStream;
+                // Handle incoming calls
+                peer.on('call', call => {
+                    currentCall = call;
+                    call.answer(localStream);
+                    call.on('stream', remoteStream => {
+                        remoteVideo.srcObject = remoteStream;
+                    });
+                    call.on('close', () => {
+                        remoteVideo.srcObject = null;
+                    });
                 });
-                call.on('close', () => {
-                    remoteVideo.srcObject = null;
-                });
+            })
+            .catch(error => {
+                alert("Error accessing media devices: " + error.message);
+                console.error(error);
             });
-        })
-        .catch(error => {
-            alert("Error accessing media: " + error.message);
-        });
 
-    function callUser() {
-        const remoteId = document.getElementById("remote-id").value.trim();
-        if (!remoteId) {
-            alert("Please enter a remote peer ID.");
-            return;
+        // Call another peer
+        function callUser() {
+            const remoteId = document.getElementById("remote-id").value.trim();
+            if (!remoteId) {
+                alert("Please enter a remote peer ID.");
+                return;
+            }
+
+            const call = peer.call(remoteId, localStream);
+            currentCall = call;
+
+            call.on('stream', remoteStream => {
+                remoteVideo.srcObject = remoteStream;
+            });
+
+            call.on('close', () => {
+                remoteVideo.srcObject = null;
+            });
+
+            call.on('error', err => {
+                console.error("Call error:", err);
+            });
         }
 
-        const call = peer.call(remoteId, localStream);
-        currentCall = call;
+        // End the current call
+        function endCall() {
+            if (currentCall) {
+                currentCall.close();
+                currentCall = null;
+                remoteVideo.srcObject = null;
+            }
 
-        call.on('stream', remoteStream => {
-            remoteVideo.srcObject = remoteStream;
-        });
+            if (localStream) {
+                localStream.getTracks().forEach(track => track.stop());
+                myVideo.srcObject = null;
+            }
 
-        call.on('close', () => {
-            remoteVideo.srcObject = null;
-        });
-    }
-
-    function endCall() {
-        if (currentCall) {
-            currentCall.close();
-            currentCall = null;
-            remoteVideo.srcObject = null;
+            alert("Call ended.");
         }
+    </script>
 
-        if (localStream) {
-            localStream.getTracks().forEach(track => track.stop());
-            myVideo.srcObject = null;
-        }
-    }
-</script>
-<button onclick="endCall()">End Call</button>
 </body>
 </html>
